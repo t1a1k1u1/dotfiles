@@ -1,82 +1,86 @@
-"dein Scripts-----------------------------
+" ====================
+" dein
+" ====================
 if &compatible
-  set nocompatible               " Be iMproved
+  set nocompatible
 endif
 
-" Required:
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
 
-" Required:
 if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
 
-  let s:toml = '~/.config/nvim/dein.toml'
-  call dein#load_toml(s:toml, {'lazy': 0})
+  call dein#load_toml('~/.config/nvim/dein.toml',      {'lazy': 0})
+  call dein#load_toml('~/.config/nvim/dein_lazy.toml', {'lazy': 1})
 
-  " You can specify revision/branch/tag.
-  call dein#add('Shougo/deol.nvim', { 'rev': 'a1b5108fd' })
-
-  " Required:
   call dein#end()
   call dein#save_state()
 endif
 
-" Required:
 filetype plugin indent on
 syntax enable
 
-" If you want to install not installed plugins on startup.
 if dein#check_install()
   call dein#install()
 endif
 
-"End dein Scripts-------------------------
+" ====================
+" color scheme
+" ====================
+set background=dark
+colorscheme hybrid
 
-"deoplete---------------------------------
-let g:deoplete#enable_at_startup = 1
+" ====================
+" light line
+" ====================
+set noshowmode
 
-"ale--------------------------------------
-let g:ale_sign_column_always = 1
+" ====================
+" deoplete.nvim
+" ====================
+" let g:deoplete#enable_at_startup = 1
 
-let g:ale_linters = {
-\   'perl': ['perl', 'perlcritic'],
-\}
+" ====================
+" Unit.vim
+" ====================
+let g:unite_enable_start_insert=1
+nnoremap <silent> ,b :Unite buffer<CR>
+nnoremap <silent> ,u :Unite file_mru buffer<CR>
 
-let g:ale_perl_perl_executable = 'perl'
-let g:ale_perl_perl_options = '-c -Mwarnings -Ilib'
-
-"vim airline------------------------------
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_theme = 'angr'
-
-"NERDTree---------------------------------
+" ====================
+" NERDTree
+" ====================
+let g:NERDTreeShowBookmarks=1
 map <C-n> :NERDTreeToggle<CR>
 
-"indentLine--------------------------------
-let g:indentLine_char = '¦'
-
-"common------------------------------------
-set encoding=utf-8
-set fileencoding=utf-8
-
+" ====================
+" common
+" ====================
+set showcmd
 set number
-set clipboard=unnamed
-
-set expandtab
-set tabstop=4
-set softtabstop=4
-set autoindent
 set smartindent
-set shiftwidth=4
-set scrolloff=3
+set expandtab
+set tabstop=2
+set shiftwidth=2
 
-set incsearch
 set ignorecase
 set smartcase
+set incsearch
+set wrapscan
 set hlsearch
-nnoremap <silent> <ESC><ESC> :nohlsearch<CR>
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
-set cursorline
+nnoremap tn gt
+nnoremap tp gT
+nnoremap tj <C-w>j
+nnoremap tk <C-w>k
+nnoremap tl <C-w>l
+nnoremap th <C-w>h
+nnoremap tJ <C-w>J
+nnoremap tK <C-w>K
+nnoremap tL <C-w>L
+nnoremap tH <C-w>H
+nnoremap tv :vsplit<CR>
 
-colorscheme molokai
+nnoremap @t :tabe<CR>:terminal<CR>
+tnoremap <Esc> <C-\><C-n>
