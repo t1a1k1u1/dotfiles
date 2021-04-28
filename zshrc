@@ -1,48 +1,26 @@
-source ~/.zplug/init.zsh
-
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-completions"
-
-if ! zplug check; then
-    zplug install
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
-zplug load
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+### End of Zinit's installer chunk
 
-autoload -Uz colors
-colors
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma/fast-syntax-highlighting
+zinit load zdharma/history-search-multi-word
 
-autoload -Uz compinit
-compinit
+zinit ice pick"async.zsh" src"pure.zsh"
+zinit light sindresorhus/pure
 
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-
-setopt hist_ignore_all_dups
-setopt hist_ignore_dups
-setopt share_history
-setopt append_history
-setopt no_beep
-
-alias vim="nvim"
-alias la="ls -a"
-alias ll="ls -al"
-
-zstyle ':completion:*:default' menu select=2
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-PROMPT="
-${fg[yellow]}[%n] ${fg[cyan]}%~${reset_color}
-%# "
-
-autoload -Uz vcs_info
-setopt prompt_subst
-zstyle ':vcs_info:*' formats "%F{green}[%b]%f"
-precmd () { vcs_info }
-RPROMPT='${vcs_info_msg_0_}'
+zinit ice from"gh-r" as"program"
+zinit load junegunn/fzf-bin
 
 export PATH="$HOME/.anyenv/bin:$PATH"
-eval "$(anyenv init - zsh)"
+eval "$(anyenv init -)"
